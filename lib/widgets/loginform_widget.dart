@@ -6,9 +6,9 @@ import 'package:login_app/utils/constants.dart';
 import 'form_widgets.dart';
 
 class LoginFormWidget extends StatefulWidget {
-  final LoginFormModel _loginFormModel;
+  final LoginFormModel loginFormModel;
 
-  LoginFormWidget(this._loginFormModel);
+  LoginFormWidget(this.loginFormModel);
 
   @override
   _LoginFormWidgetState createState() => _LoginFormWidgetState();
@@ -20,6 +20,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: DimConstants.FORMBODY_PADDING,
       child: buildLoginForm(context),
     );
   }
@@ -68,7 +69,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   }
 
   void _passwordFieldOnSaved(String value) {
-    widget._loginFormModel.password = value;
+    widget.loginFormModel.password = value;
   }
 
   String _emailFieldValidator(String value) {
@@ -79,7 +80,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   }
 
   void _emailFieldOnSaved(String value) {
-    widget._loginFormModel.email = value;
+    widget.loginFormModel.email = value;
   }
 
   void _onFormSubmit() {
@@ -88,7 +89,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     if (formValidation) {
       // if form is valid
       _loginFormKey.currentState.save();
-      print(widget._loginFormModel.toString());
+      print(widget.loginFormModel.toString());
       showTextSnackbar(context, "Login Succesfull");
     } else {
       showTextSnackbar(context, "Errors in Login Form");

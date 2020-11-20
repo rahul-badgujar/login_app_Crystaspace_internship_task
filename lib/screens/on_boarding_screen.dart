@@ -51,23 +51,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget buildBody() {
-    return Padding(
-      padding: DimConstants.BODY_PADDING, // body padding for screens
-      child: TabBarView(
-        children: [
-          // tabviews
-          Consumer<LoginFormModel>(
-            builder: (context, loginFormModel, _) {
-              return LoginFormWidget(loginFormModel); // login form
-            },
-          ),
-          Consumer<SignupFormModel>(
-            builder: (context, signupFormModel, _) {
-              return SignupFormWidget(signupFormModel); // sign up form
-            },
-          ),
-        ],
-      ),
+    return TabBarView(
+      children: [
+        // tabviews
+        Consumer<LoginFormModel>(
+          builder: (context, loginFormModel, _) {
+            return LoginFormWidget(loginFormModel); // login form
+          },
+        ),
+        Consumer<SignupFormModel>(
+          builder: (context, signupFormModel, _) {
+            return SignupFormWidget(signupFormModel); // sign up form
+          },
+        ),
+      ],
     );
   }
 }

@@ -18,11 +18,14 @@ class FormSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onClick,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Text(label),
+    return Container(
+      margin: DimConstants.BUTTON_MARGIN,
+      child: ElevatedButton(
+        onPressed: onClick,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(label),
+        ),
       ),
     );
   }
@@ -36,6 +39,7 @@ class FormInputField extends StatelessWidget {
   final AutovalidateMode autovalidateMode;
   final Function validator;
   final Function onSaved;
+  final TextEditingController controller;
 
   const FormInputField({
     Key key,
@@ -45,6 +49,7 @@ class FormInputField extends StatelessWidget {
     this.autovalidateMode = AutovalidateMode.disabled,
     this.validator,
     this.onSaved,
+    this.controller,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -57,6 +62,7 @@ class FormInputField extends StatelessWidget {
       validator: this.validator,
       onSaved: this.onSaved,
       autovalidateMode: this.autovalidateMode,
+      controller: this.controller,
     );
   }
 }

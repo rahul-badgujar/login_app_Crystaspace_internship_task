@@ -16,9 +16,11 @@ class StringConstants {
 }
 
 class DimConstants {
-  static const EdgeInsets BODY_PADDING =
+  static const EdgeInsets FORMBODY_PADDING =
       const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
   static const EdgeInsets TAB_PADDING = const EdgeInsets.symmetric(vertical: 6);
+  static const EdgeInsets BUTTON_MARGIN =
+      EdgeInsets.symmetric(vertical: 12, horizontal: 4);
 }
 
 class NumberConstants {

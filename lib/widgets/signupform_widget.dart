@@ -6,9 +6,9 @@ import 'package:login_app/utils/constants.dart';
 import 'form_widgets.dart';
 
 class SignupFormWidget extends StatefulWidget {
-  final SignupFormModel _signupFormModel;
+  final SignupFormModel signupFormModel;
 
-  SignupFormWidget(this._signupFormModel);
+  SignupFormWidget(this.signupFormModel);
 
   @override
   _SignupFormWidgetState createState() => _SignupFormWidgetState();
@@ -23,6 +23,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: DimConstants.FORMBODY_PADDING,
       child: buildSignupForm(context),
     );
   }
@@ -52,6 +53,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             validator: _passwordFieldValidator,
             onSaved: _passwordFieldOnSaved,
             isTextObscure: true,
+            controller: passwordTextController,
           ),
           FormInputField(
             // confirm password field
@@ -73,10 +75,13 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   String _confirmPasswordFieldValidator(String value) {
-    final String password = passwordTextController.text;
+    final String password = passwordTextController.text.toString();
     final bool matchingWithPassoword =
         password == value; // check if password and confirm password matches
-    if (!matchingWithPassoword) return "Passwords doesnt Match";
+    if (!matchingWithPassoword) {
+      // print("Password: " + password + ", Confirm Password: " + value);
+      return "Passwords not matching";
+    }
     final validator = Validator(validators: [RequiredValidator()]);
     return validator.validate(
         context: context,
@@ -85,7 +90,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   void _confirmPasswordFieldOnSaved(String value) {
-    widget._signupFormModel.confirmPassword = value;
+    widget.signupFormModel.confirmPassword = value;
   }
 
   String _passwordFieldValidator(String value) {
@@ -102,7 +107,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   void _passwordFieldOnSaved(String value) {
-    widget._signupFormModel.password = value;
+    widget.signupFormModel.password = value;
   }
 
   String _emailFieldValidator(String value) {
@@ -113,7 +118,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   void _emailFieldOnSaved(String value) {
-    widget._signupFormModel.email = value;
+    widget.signupFormModel.email = value;
   }
 
   void _onFormSubmit() {
@@ -122,7 +127,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     if (formValidation) {
       // if form is valid
       _signupFormKey.currentState.save();
-      print(widget._signupFormModel);
+      print(widget.signupFormModel);
       showTextSnackbar(context, "Signup Succesfull");
     } else {
       showTextSnackbar(context, "Errors in Signup Form");
