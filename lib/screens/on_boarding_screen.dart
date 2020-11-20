@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:login_app/models/loginform_model.dart';
 import 'package:login_app/models/signupform_model.dart';
 import 'package:login_app/utils/constants.dart';
+import 'package:login_app/widgets/form_widgets.dart';
 import 'package:login_app/widgets/loginform_widget.dart';
 import 'package:login_app/widgets/signupform_widget.dart';
 import 'package:provider/provider.dart';
@@ -58,26 +59,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
       bottom: TabBar(
         tabs: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Text(
-              "Login",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Text(
-              "Sign Up",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
+          TabBarTab("Login"),
+          TabBarTab("Sign Up"),
         ],
       ),
     );

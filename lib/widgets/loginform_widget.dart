@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:login_app/models/loginform_model.dart';
 
+import 'form_widgets.dart';
+
 class LoginFormWidget extends StatefulWidget {
   final LoginFormModel _loginFormModel;
 
@@ -26,62 +28,43 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       key: _loginFormKey,
       child: Column(
         children: [
-          buildEmailField(context),
-          buildPasswordField(context),
-          buildLoginButton(),
+          FormInputField(
+            label: "Login",
+            hint: "Login",
+            validator: _emailFieldValidator,
+            onSaved: _emailFieldOnSaved,
+          ),
+          FormInputField(
+            label: "Password",
+            hint: "Password",
+            validator: _passwordFieldValidator,
+            onSaved: _passwordFieldOnSaved,
+            isTextObscure: true,
+          ),
+          FormSubmitButton(label: "Login", onClick: _onFormSubmit),
         ],
       ),
     );
   }
 
-  Widget buildLoginButton() {
-    return Container(
-      margin: EdgeInsets.all(8),
-      child: ElevatedButton(
-        onPressed: _onFormSubmit,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text("Login"),
-        ),
-      ),
-    );
+  String _passwordFieldValidator(String value) {
+    final validator = Validator(validators: [RequiredValidator()]);
+    return validator.validate(
+        context: context, label: "Password", value: value);
   }
 
-  TextFormField buildPasswordField(BuildContext context) {
-    return TextFormField(
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: "Password",
-        labelText: "Password",
-      ),
-      validator: (value) {
-        final validator = Validator(validators: [RequiredValidator()]);
-        return validator.validate(
-            context: context, label: "Password", value: value);
-      },
-      onSaved: (value) {
-        widget._loginFormModel.password = value;
-      },
-    );
+  void _passwordFieldOnSaved(String value) {
+    widget._loginFormModel.password = value;
   }
 
-  TextFormField buildEmailField(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        hintText: "Email",
-        labelText: "Email",
-      ),
-      validator: (value) {
-        final validator =
-            Validator(validators: [RequiredValidator(), EmailValidator()]);
-        return validator.validate(
-            context: context, label: "Email", value: value);
-      },
-      onSaved: (value) {
-        widget._loginFormModel.email = value;
-      },
-    );
+  String _emailFieldValidator(String value) {
+    final validator =
+        Validator(validators: [RequiredValidator(), EmailValidator()]);
+    return validator.validate(context: context, label: "Email", value: value);
+  }
+
+  void _emailFieldOnSaved(String value) {
+    widget._loginFormModel.email = value;
   }
 
   void _onFormSubmit() {
@@ -89,14 +72,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     if (formValidation) {
       _loginFormKey.currentState.save();
       print(widget._loginFormModel.toString());
-      _showTextSnackbar("Login Succesfull");
+      showTextSnackbar(context, "Login Succesfull");
     } else {
-      _showTextSnackbar("Errors in Login Form");
+      showTextSnackbar(context, "Errors in Login Form");
     }
-  }
-
-  void _showTextSnackbar(String s) {
-    SnackBar snackBar = SnackBar(content: Text(s));
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 }

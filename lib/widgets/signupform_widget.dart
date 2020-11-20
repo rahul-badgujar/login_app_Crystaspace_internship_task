@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:login_app/models/signupform_model.dart';
 
+import 'form_widgets.dart';
+
 class SignupFormWidget extends StatefulWidget {
   final SignupFormModel _signupFormModel;
 
@@ -35,86 +37,64 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       key: _signupFormKey,
       child: Column(
         children: [
-          buildEmailField(context),
-          buildPasswordField(context),
-          buildConfirmPasswordField(context),
-          buildSignupButton(),
+          FormInputField(
+            label: "Login",
+            hint: "Login",
+            validator: _emailFieldValidator,
+            onSaved: _emailFieldOnSaved,
+          ),
+          FormInputField(
+            label: "Password",
+            hint: "Password",
+            validator: _passwordFieldValidator,
+            onSaved: _passwordFieldOnSaved,
+            isTextObscure: true,
+          ),
+          FormInputField(
+            label: "Confirm Password",
+            hint: "Confirm Password",
+            validator: _confirmPasswordFieldValidator,
+            onSaved: _confirmPasswordFieldOnSaved,
+            isTextObscure: true,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          FormSubmitButton(label: "Sign Up", onClick: _onFormSubmit),
         ],
       ),
     );
   }
 
-  Widget buildSignupButton() {
-    return Container(
-      margin: EdgeInsets.all(8),
-      child: ElevatedButton(
-        onPressed: _onFormSubmit,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text("Sign Up"),
-        ),
-      ),
-    );
+  String _confirmPasswordFieldValidator(String value) {
+    final String password = passwordTextController.text;
+    final bool matchingWithPassoword = password == value;
+    if (!matchingWithPassoword) return "Passwords doesnt Match";
+    final validator = Validator(validators: [RequiredValidator()]);
+    return validator.validate(
+        context: context, label: "Password", value: value);
   }
 
-  TextFormField buildConfirmPasswordField(BuildContext context) {
-    return TextFormField(
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: "Confirm Password",
-        labelText: "Confirm Password",
-      ),
-      validator: (value) {
-        final String password = passwordTextController.text;
-        final bool matchingWithPassoword = password == value;
-        if (!matchingWithPassoword) return "Passwords doesnt Match";
-        final validator = Validator(validators: [RequiredValidator()]);
-        return validator.validate(
-            context: context, label: "Password", value: value);
-      },
-      onSaved: (value) {
-        widget._signupFormModel.confirmPassword = value;
-      },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-    );
+  void _confirmPasswordFieldOnSaved(String value) {
+    widget._signupFormModel.confirmPassword = value;
   }
 
-  TextFormField buildPasswordField(BuildContext context) {
-    return TextFormField(
-      controller: passwordTextController,
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: "Password",
-        labelText: "Password",
-      ),
-      validator: (value) {
-        final validator = Validator(validators: [RequiredValidator()]);
-        return validator.validate(
-            context: context, label: "Password", value: value);
-      },
-      onSaved: (value) {
-        widget._signupFormModel.password = value;
-      },
-    );
+  String _passwordFieldValidator(String value) {
+    final validator = Validator(validators: [RequiredValidator()]);
+    return validator.validate(
+        context: context, label: "Password", value: value);
   }
 
-  TextFormField buildEmailField(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        hintText: "Email",
-        labelText: "Email",
-      ),
-      validator: (value) {
-        final validator =
-            Validator(validators: [RequiredValidator(), EmailValidator()]);
-        return validator.validate(
-            context: context, label: "Email", value: value);
-      },
-      onSaved: (value) {
-        widget._signupFormModel.email = value;
-      },
-    );
+  void _passwordFieldOnSaved(String value) {
+    widget._signupFormModel.password = value;
+  }
+
+  String _emailFieldValidator(String value) {
+    final validator =
+        Validator(validators: [RequiredValidator(), EmailValidator()]);
+    return validator.validate(context: context, label: "Email", value: value);
+  }
+
+  void _emailFieldOnSaved(String value) {
+    widget._signupFormModel.email = value;
   }
 
   void _onFormSubmit() {
@@ -122,14 +102,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     if (formValidation) {
       _signupFormKey.currentState.save();
       print(widget._signupFormModel);
-      _showTextSnackbar("Signup Succesfull");
+      showTextSnackbar(context, "Signup Succesfull");
     } else {
-      _showTextSnackbar("Errors in Signup Form");
+      showTextSnackbar(context, "Errors in Signup Form");
     }
-  }
-
-  void _showTextSnackbar(String s) {
-    SnackBar snackBar = SnackBar(content: Text(s));
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
