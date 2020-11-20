@@ -34,12 +34,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     );
   }
 
-  ElevatedButton buildLoginButton() {
-    return ElevatedButton(
-      onPressed: _onFormSubmit,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Text("Login"),
+  Widget buildLoginButton() {
+    return Container(
+      margin: EdgeInsets.all(8),
+      child: ElevatedButton(
+        onPressed: _onFormSubmit,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text("Login"),
+        ),
       ),
     );
   }
@@ -55,6 +58,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         final validator = Validator(validators: [RequiredValidator()]);
         return validator.validate(
             context: context, label: "Password", value: value);
+      },
+      onSaved: (value) {
+        widget._loginFormModel.password = value;
       },
     );
   }
@@ -72,6 +78,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         return validator.validate(
             context: context, label: "Email", value: value);
       },
+      onSaved: (value) {
+        widget._loginFormModel.email = value;
+      },
     );
   }
 
@@ -79,6 +88,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     bool formValidation = _loginFormKey.currentState.validate();
     if (formValidation) {
       _loginFormKey.currentState.save();
+      print(widget._loginFormModel.toString());
       _showTextSnackbar("Login Succesfull");
     } else {
       _showTextSnackbar("Errors in Login Form");

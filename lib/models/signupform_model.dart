@@ -22,4 +22,15 @@ class SignupFormModel extends ChangeNotifier {
     this.confirmPassword = confirmPassword;
     notifyListeners();
   }
+
+  @override
+  String toString() {
+    return "Signup Form Model: [ Email: " +
+        this.email.toString() +
+        ", Password: " +
+        this.password.toString() +
+        ", Confirm Password: " +
+        this.confirmPassword.toString() +
+        " ]";
+  }
 }

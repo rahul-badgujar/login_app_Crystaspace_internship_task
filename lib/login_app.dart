@@ -8,9 +8,10 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: StringConstants.APP_NAME,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      debugShowCheckedModeBanner: false,
       home: OnBoardingScreen(),
     );
   }

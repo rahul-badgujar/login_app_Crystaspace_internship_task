@@ -15,4 +15,13 @@ class LoginFormModel extends ChangeNotifier {
     this.password = password;
     notifyListeners();
   }
+
+  @override
+  String toString() {
+    return "Login Form Model: [ Email: " +
+        this.email.toString() +
+        ", Password: " +
+        this.password.toString() +
+        " ]";
+  }
 }

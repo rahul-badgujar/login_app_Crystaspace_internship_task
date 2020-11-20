@@ -44,12 +44,15 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     );
   }
 
-  ElevatedButton buildSignupButton() {
-    return ElevatedButton(
-      onPressed: _onFormSubmit,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Text("Sign Up"),
+  Widget buildSignupButton() {
+    return Container(
+      margin: EdgeInsets.all(8),
+      child: ElevatedButton(
+        onPressed: _onFormSubmit,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text("Sign Up"),
+        ),
       ),
     );
   }
@@ -69,6 +72,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         return validator.validate(
             context: context, label: "Password", value: value);
       },
+      onSaved: (value) {
+        widget._signupFormModel.confirmPassword = value;
+      },
       autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
@@ -86,6 +92,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         return validator.validate(
             context: context, label: "Password", value: value);
       },
+      onSaved: (value) {
+        widget._signupFormModel.password = value;
+      },
     );
   }
 
@@ -102,6 +111,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         return validator.validate(
             context: context, label: "Email", value: value);
       },
+      onSaved: (value) {
+        widget._signupFormModel.email = value;
+      },
     );
   }
 
@@ -109,6 +121,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     bool formValidation = _signupFormKey.currentState.validate();
     if (formValidation) {
       _signupFormKey.currentState.save();
+      print(widget._signupFormModel);
       _showTextSnackbar("Signup Succesfull");
     } else {
       _showTextSnackbar("Errors in Signup Form");
