@@ -22,9 +22,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: DimConstants.FORMBODY_PADDING,
-      child: buildSignupForm(context),
+    return SingleChildScrollView(
+      child: Container(
+        padding: DimConstants.FORMBODY_PADDING,
+        child: buildSignupForm(context),
+      ),
     );
   }
 

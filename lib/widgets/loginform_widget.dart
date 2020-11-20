@@ -19,9 +19,11 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: DimConstants.FORMBODY_PADDING,
-      child: buildLoginForm(context),
+    return SingleChildScrollView(
+      child: Container(
+        padding: DimConstants.FORMBODY_PADDING,
+        child: buildLoginForm(context),
+      ),
     );
   }
 
