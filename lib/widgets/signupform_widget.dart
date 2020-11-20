@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:login_app/models/signupform_model.dart';
+import 'package:login_app/utils/constants.dart';
 
 import 'form_widgets.dart';
 
@@ -17,7 +18,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _signupFormKey = new GlobalKey<FormState>();
 
   final TextEditingController passwordTextController =
-      new TextEditingController();
+      new TextEditingController(); // for confirm password and password matching check
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +39,34 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       child: Column(
         children: [
           FormInputField(
-            label: "Login",
-            hint: "Login",
+            // email field
+            label: StringConstants.EMAIL_TXT,
+            hint: StringConstants.EMAIL_TXT,
             validator: _emailFieldValidator,
             onSaved: _emailFieldOnSaved,
           ),
           FormInputField(
-            label: "Password",
-            hint: "Password",
+            // password field
+            label: StringConstants.PASSWORD_TXT,
+            hint: StringConstants.PASSWORD_TXT,
             validator: _passwordFieldValidator,
             onSaved: _passwordFieldOnSaved,
             isTextObscure: true,
           ),
           FormInputField(
-            label: "Confirm Password",
-            hint: "Confirm Password",
+            // confirm password field
+            label: StringConstants.CNF_PASSWORD_TXT,
+            hint: StringConstants.CNF_PASSWORD_TXT,
             validator: _confirmPasswordFieldValidator,
             onSaved: _confirmPasswordFieldOnSaved,
             isTextObscure: true,
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
-          FormSubmitButton(label: "Sign Up", onClick: _onFormSubmit),
+          FormSubmitButton(
+            // sign up button
+            label: StringConstants.SIGNUP_TXT,
+            onClick: _onFormSubmit,
+          ),
         ],
       ),
     );
@@ -66,11 +74,14 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   String _confirmPasswordFieldValidator(String value) {
     final String password = passwordTextController.text;
-    final bool matchingWithPassoword = password == value;
+    final bool matchingWithPassoword =
+        password == value; // check if password and confirm password matches
     if (!matchingWithPassoword) return "Passwords doesnt Match";
     final validator = Validator(validators: [RequiredValidator()]);
     return validator.validate(
-        context: context, label: "Password", value: value);
+        context: context,
+        label: StringConstants.CNF_PASSWORD_TXT,
+        value: value);
   }
 
   void _confirmPasswordFieldOnSaved(String value) {
@@ -78,9 +89,16 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   String _passwordFieldValidator(String value) {
+    final length = value.length;
+    if (length < 8) {
+      // if password is short
+      return "Password should be of mininum " +
+          NumberConstants.MIN_PSW_LEN.toString() +
+          " characteres";
+    }
     final validator = Validator(validators: [RequiredValidator()]);
     return validator.validate(
-        context: context, label: "Password", value: value);
+        context: context, label: StringConstants.PASSWORD_TXT, value: value);
   }
 
   void _passwordFieldOnSaved(String value) {
@@ -90,7 +108,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   String _emailFieldValidator(String value) {
     final validator =
         Validator(validators: [RequiredValidator(), EmailValidator()]);
-    return validator.validate(context: context, label: "Email", value: value);
+    return validator.validate(
+        context: context, label: StringConstants.EMAIL_TXT, value: value);
   }
 
   void _emailFieldOnSaved(String value) {
@@ -98,8 +117,10 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   }
 
   void _onFormSubmit() {
+    // when form is submitted
     bool formValidation = _signupFormKey.currentState.validate();
     if (formValidation) {
+      // if form is valid
       _signupFormKey.currentState.save();
       print(widget._signupFormModel);
       showTextSnackbar(context, "Signup Succesfull");

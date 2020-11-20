@@ -6,13 +6,13 @@ class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: StringConstants.APP_NAME,
+      title: StringConstants.APP_NAME, // app name
       theme: ThemeData(
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      debugShowCheckedModeBanner: false, // removed debug banner
+      home: OnBoardingScreen(), // home screen
     );
   }
 }

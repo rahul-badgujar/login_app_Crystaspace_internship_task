@@ -8,6 +8,7 @@ import 'package:login_app/widgets/signupform_widget.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardingScreen extends StatefulWidget {
+  static const int TABS_COUNT = 2;
   @override
   _OnBoardingScreenState createState() => _OnBoardingScreenState();
 }
@@ -16,13 +17,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
+      // multiprovider
       providers: [
-        ChangeNotifierProvider.value(value: LoginFormModel()),
-        ChangeNotifierProvider.value(value: SignupFormModel()),
+        ChangeNotifierProvider.value(
+            value: LoginFormModel()), // login form model
+        ChangeNotifierProvider.value(
+            value: SignupFormModel()), // signup form model
       ],
       child: Builder(builder: (context) {
         return DefaultTabController(
-          length: 2,
+          length: OnBoardingScreen.TABS_COUNT, // the total numbers of tabs
           child: Scaffold(
             appBar: buildAppBar(),
             body: buildBody(),
@@ -32,35 +36,36 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Widget buildBody() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: TabBarView(
-        children: [
-          Consumer<LoginFormModel>(
-            builder: (context, loginFormModel, _) {
-              return LoginFormWidget(loginFormModel);
-            },
-          ),
-          Consumer<SignupFormModel>(
-            builder: (context, signupFormModel, _) {
-              return SignupFormWidget(signupFormModel);
-            },
-          ),
+  AppBar buildAppBar() {
+    return AppBar(
+      title: Text(
+        StringConstants.ONBOARDING_SCREEN_TITLE, // title of screen
+      ),
+      bottom: TabBar(
+        tabs: [
+          TabBarTab(title: StringConstants.LOGIN_TXT), // login tab
+          TabBarTab(title: StringConstants.SIGNUP_TXT), // signup tab
         ],
       ),
     );
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      title: Text(
-        StringConstants.ONBOARDING_SCREEN_TITLE,
-      ),
-      bottom: TabBar(
-        tabs: [
-          TabBarTab("Login"),
-          TabBarTab("Sign Up"),
+  Widget buildBody() {
+    return Padding(
+      padding: DimConstants.BODY_PADDING, // body padding for screens
+      child: TabBarView(
+        children: [
+          // tabviews
+          Consumer<LoginFormModel>(
+            builder: (context, loginFormModel, _) {
+              return LoginFormWidget(loginFormModel); // login form
+            },
+          ),
+          Consumer<SignupFormModel>(
+            builder: (context, signupFormModel, _) {
+              return SignupFormWidget(signupFormModel); // sign up form
+            },
+          ),
         ],
       ),
     );

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+// model class for login form details
 class LoginFormModel extends ChangeNotifier {
   String email;
   String password;
 
+  // getters
   String get getEmail => this.email;
   String get getPassword => this.password;
+  // setters
   set setEmail(String email) {
     this.email = email;
     notifyListeners();
@@ -16,6 +19,7 @@ class LoginFormModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // string version of model object
   @override
   String toString() {
     return "Login Form Model: [ Email: " +
