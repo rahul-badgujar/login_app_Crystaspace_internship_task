@@ -7,6 +7,28 @@ void showTextSnackbar(BuildContext context, String s) {
   Scaffold.of(context).showSnackBar(snackBar);
 }
 
+void showStatusNotifyingDialog(BuildContext context,
+    {@required bool isSuccessed, String message = "No Message"}) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Icon(
+            isSuccessed ? Icons.check : Icons.cancel,
+            color: isSuccessed
+                ? ColorConstants.OPERATION_SUCCESS_COLOR
+                : ColorConstants.OPERATION_FAILURE_COLOR,
+            size: DimConstants.STATUS_NOTIFIER_DIALOG_ICON_SIZE,
+          ),
+          children: [
+            SimpleDialogOption(
+              child: Center(child: Text(message)),
+            ),
+          ],
+        );
+      });
+}
+
 // widget for submission button of form
 class FormSubmitButton extends StatelessWidget {
   final String label;

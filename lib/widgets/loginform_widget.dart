@@ -92,9 +92,10 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       // if form is valid
       _loginFormKey.currentState.save();
       print(widget.loginFormModel.toString());
-      showTextSnackbar(context, "Login Succesfull");
+      showStatusNotifyingDialog(context,
+          isSuccessed: true, message: "Logged In Succesfully");
     } else {
-      showTextSnackbar(context, "Errors in Login Form");
+      showTextSnackbar(context, "Something went wrong...");
     }
   }
 }

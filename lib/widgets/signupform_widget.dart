@@ -130,9 +130,10 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       // if form is valid
       _signupFormKey.currentState.save();
       print(widget.signupFormModel);
-      showTextSnackbar(context, "Signup Succesfull");
+      showStatusNotifyingDialog(context,
+          isSuccessed: true, message: "Signed Up Succesfully");
     } else {
-      showTextSnackbar(context, "Errors in Signup Form");
+      showTextSnackbar(context, "Something went wrong");
     }
   }
 }
